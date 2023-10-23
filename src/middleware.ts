@@ -22,7 +22,7 @@ export default authMiddleware({
 
       const dataToJson = (await data.json()) as { url: string };
 
-      if (data?.url) {
+      if (data.url) {
         return NextResponse.redirect(new URL(dataToJson.url));
       }
     }
