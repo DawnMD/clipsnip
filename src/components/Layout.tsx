@@ -117,7 +117,7 @@ export const Layout = ({ children }: PropsWithChildren) => {
             </div>
           </div>
         </header>
-        <div className="relative flex-1">{children}</div>
+        <div className="relative mt-14 flex-1 p-8">{children}</div>
       </div>
     </>
   );
