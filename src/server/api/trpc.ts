@@ -34,7 +34,10 @@ type AuthContext = SignedInAuthObject | SignedOutAuthObject;
  * These allow you to access things when processing a request, like the database, the session, etc.
  */
 
-type CreateContextOptions = Record<string, AuthContext>;
+type CreateContextOptions = {
+  auth: AuthContext;
+  req: CreateNextContextOptions["req"];
+};
 
 /**
  * This helper generates the "internals" for a tRPC context. If you need to use it, you can export
@@ -50,6 +53,7 @@ const createInnerTRPCContext = (_opts: CreateContextOptions) => {
   return {
     db,
     auth: _opts.auth,
+    req: _opts.req,
   };
 };
 
@@ -62,6 +66,7 @@ const createInnerTRPCContext = (_opts: CreateContextOptions) => {
 export const createTRPCContext = (_opts: CreateNextContextOptions) => {
   return createInnerTRPCContext({
     auth: getAuth(_opts.req),
+    req: _opts.req,
   });
 };
 
@@ -95,6 +100,7 @@ const isAuthed = t.middleware(({ next, ctx }) => {
   return next({
     ctx: {
       auth: ctx.auth,
+      req: ctx.req,
     },
   });
 });
