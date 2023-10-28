@@ -20,15 +20,19 @@ import {
  */
 export const mysqlTable = mysqlTableCreator((name) => `clipsnip_${name}`);
 
-export const urls = mysqlTable(
+export const urlSchema = mysqlTable(
   "url",
   {
     id: bigint("id", { mode: "number" }).primaryKey().autoincrement(),
-    url: varchar("url", { length: 256 }),
-    shortUrl: varchar("short_url", { length: 256 }),
+    url: varchar("url", {
+      length: 700,
+    }).notNull(),
+    description: varchar("description", { length: 256 }),
+    shortUrl: varchar("short_url", { length: 256 }).notNull(),
     userAuthId: varchar("user_id", { length: 256 }),
-    totalVisitCount: int("total_visit_count"),
-    disabled: boolean("disabled").default(false),
+    totalVisitCount: int("total_visit_count").default(1).notNull(),
+    totalUniqueVisitCount: int("total_unique_visit_count").default(1).notNull(),
+    disabled: boolean("disabled").default(false).notNull(),
     createdAt: timestamp("created_at")
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
