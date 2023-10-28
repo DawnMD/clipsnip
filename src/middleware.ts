@@ -10,18 +10,33 @@ export default authMiddleware({
     if (req.nextUrl.pathname.startsWith("/snip/")) {
       const slug = req.nextUrl.pathname.split("/").pop();
 
+      // Get the slug:
       if (!slug) {
         return NextResponse.redirect(req.nextUrl.origin);
       }
 
-      const data = await fetch(`${req.nextUrl.origin}/api/url/${slug}`);
+      // Get the data:
+      const data = await fetch(
+        `${req.nextUrl.origin}/api/url/redirect/${slug}`,
+      );
 
+      // If the data is not found:
       if (data.status === 404) {
         return NextResponse.redirect(`${req.nextUrl.origin}/404`);
       }
 
-      const dataToJson = (await data.json()) as { url: string };
+      // Convert the data to JSON:
+      const dataToJson = (await data.json()) as {
+        url: string;
+        disabled: boolean;
+      };
 
+      // If the data is disabled:
+      if (dataToJson.disabled) {
+        return NextResponse.redirect(`${req.nextUrl.origin}/404`);
+      }
+
+      // If the data is enabled, rediret:
       if (data.url) {
         return NextResponse.redirect(new URL(dataToJson.url));
       }
