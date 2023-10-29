@@ -18,12 +18,14 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   loading?: boolean;
+  isError?: boolean;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   loading,
+  isError,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
@@ -78,7 +80,7 @@ export function DataTable<TData, TValue>({
           ) : (
             <TableRow>
               <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
+                {isError ? "Unable to fetch data at this time" : "No results."}
               </TableCell>
             </TableRow>
           )}
