@@ -32,7 +32,7 @@ export const Layout = ({ children }: PropsWithChildren) => {
   return (
     <>
       <div className="relative flex min-h-screen flex-col">
-        <header className="supports-backdrop-blur:bg-background/60 bg-background/95 fixed top-0 z-40 w-full border-b backdrop-blur">
+        <header className="supports-backdrop-blur:bg-background/60 fixed top-0 z-40 w-full border-b bg-background/95 backdrop-blur">
           <div className="container flex h-14 items-center">
             <div className="mr-4 flex items-center gap-6">
               <Sheet>
