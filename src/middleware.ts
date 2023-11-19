@@ -8,7 +8,9 @@ export default authMiddleware({
   publicRoutes: ["/", "/snip/:slug*"],
   async beforeAuth(req, _) {
     if (req.nextUrl.pathname.startsWith("/snip/")) {
-      const slug = req.nextUrl.pathname.split("/").pop();
+      const { nextUrl, geo } = req;
+      const slug = nextUrl.pathname.split("/").pop();
+      const country = geo?.country ?? "N/A";
 
       // Get the slug:
       if (!slug) {
@@ -17,7 +19,7 @@ export default authMiddleware({
 
       // Get the data:
       const data = await fetch(
-        `${req.nextUrl.origin}/api/url/redirect/${slug}`,
+        `${req.nextUrl.origin}/api/url/redirect/${slug}?country=${country}`,
       );
 
       // If the data is not found:
