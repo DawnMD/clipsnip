@@ -10,6 +10,7 @@ import {
   varchar,
   int,
   boolean,
+  json,
 } from "drizzle-orm/mysql-core";
 
 /**
@@ -29,14 +30,16 @@ export const urlSchema = mysqlTable(
     }).notNull(),
     description: varchar("description", { length: 256 }),
     shortUrl: varchar("short_url", { length: 256 }).notNull(),
-    userAuthId: varchar("user_id", { length: 256 }),
+    userAuthId: varchar("user_id", { length: 256 }).notNull(),
     totalVisitCount: int("total_visit_count").default(1).notNull(),
-    totalUniqueVisitCount: int("total_unique_visit_count").default(1).notNull(),
+    // totalUniqueVisitCount: int("total_unique_visit_count").default(1).notNull(),
     disabled: boolean("disabled").default(false).notNull(),
+    visitCountByCountry: json("visit_count_by_country").default("{}"),
+    visitCountByDate: json("visit_count_by_date").default("{}"),
     createdAt: timestamp("created_at")
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
-    updatedAt: timestamp("updatedAt").onUpdateNow(),
+    updatedAt: timestamp("updatedAt").onUpdateNow().defaultNow(),
   },
   (table) => ({
     urlIndex: index("url_idx").on(table.url),
